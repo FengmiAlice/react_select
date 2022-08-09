@@ -47,8 +47,10 @@ const handleClick=(e)=>{
 }
   return (
     <div className="App">
-      <SelectMultip data={data} width="500px" max={3} onClick={handleClick}></SelectMultip>
-
+      <div className='section'>
+        <p>受控select组件</p>
+        <SelectMultip data={data} width="500px" max={3} onClick={handleClick}></SelectMultip>
+      </div>
       <div className='section'>
         <p>Exercise 1:</p>
         <Select  style={customStyles}  isMulti={true} options={data}  >

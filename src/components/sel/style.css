@@ -2,7 +2,7 @@ input {
     cursor: pointer;
   }
 .select {
-    width:250px;
+    width:300px;
     box-sizing: border-box;
     position: relative;
     min-height:30px;
@@ -20,17 +20,35 @@ input {
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
 
 }
-
+.selectPaneLeft{
+  flex:1;
+  flex-wrap: wrap;
+  align-items: center;
+  -webkit-box-align: center;
+    padding: 2px 8px;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+.selectPaneRight{
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  -webkit-box-align: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
 .select-right {
     width: 5px;
     height: 5px;
     position: absolute;
     right: 10px;
-    /* transition: transform .1s; */
+    transition: transform .1s;
     border: solid #999;
     border-width: 0 1px 1px 0;
     display: inline-block;
     padding: 3px;
+    cursor: pointer;
   }
   .select-down {
     top: calc(40% - 5px);
@@ -40,26 +58,63 @@ input {
     top: 40%;
     transform: rotate(-135deg);
   }
+  .lineSplitIcon{
+    /* width: 5px;
+    height: 5px;
+    position: absolute;
+    right: 16px;
+    transition: transform .1s;
+    border-color:#999;
+    display: inline-block;
+    padding: 3px; */
+    align-self: stretch;
+    background-color: hsl(0, 0%, 80%);
+    margin-bottom: 8px;
+    margin-top: 8px;
+    margin-right: 8px;
+    width: 1px;
+    box-sizing: border-box;
+  }
+  .deleteAllIcon{
+    /* position: absolute;
+    right: 46px;
+    top: -8px;
+    font-size: 26px;
+    color: #999;
+    cursor: pointer;
+    display: inline-block; */
+    font-size: 20px;
+    color: hsl(0, 0%, 80%);
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 8px;
+    -webkit-transition: color 150ms;
+    transition: color 150ms;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  .deleteNoneIcon{
+    display: none;
+  }
   .mutliSelect {
     position: relative;
     width: inherit;
   }
-.dropdown ul {
- margin: -1px 0 0 0;
-}
 
-.dropdown  ul {
+.mutliDropdown  ul {
     z-index: 55;
- display: none;
- left: 0px;
- padding: 2px 0px 2px 5px;
- position: absolute;
- width: 250px;
- list-style: none;
- height: auto;
- max-height: 274px;
- overflow: auto;
- border: 1px solid #e4e7ed;
+    display: none;
+    left: 0px;
+    padding: 2px 0px 2px 5px;
+    position: absolute;
+    width: 250px;
+    list-style: none;
+    height: auto;
+    max-height: 274px;
+    overflow: auto;
+    border: 1px solid #e4e7ed;
     border-radius: 4px;
     background-color: #fff;
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
@@ -67,7 +122,7 @@ input {
     margin: 5px 0;
 }
 
-.dropdown  ul li  {
+.mutliDropdown  ul li  {
     list-style-type: none;
     display: flex;
     justify-content: center;
@@ -83,10 +138,10 @@ input {
     box-sizing: border-box;
     cursor: pointer;
 }
-.dropdown  ul li:hover {
+.mutliDropdown  ul li:hover {
     background-color: #f5f7fa;
 }
-.dropdown  ul li label {
+.mutliDropdown  ul li label {
     width: 100%;
     overflow: hidden;
   text-overflow: ellipsis;
@@ -94,15 +149,18 @@ input {
     cursor: pointer;
 }
 .tag {
-    height: 24px;
+    /* height: 24px; */
     padding: 0 8px;
-    line-height: 22px;
-        background-color: #f4f4f5;
+    margin: 6px 14px;
+    /* line-height: 22px; */
+    position: relative;
+    background-color: #f4f4f5;
     border-color: #e9e9eb;
     color: #909399;
-        box-sizing: border-box;
-    margin: 2px 0 2px 6px;
-    display: flex;
+    box-sizing: border-box;
+    /* margin: 2px 0 2px 6px; */
+    /* display: flex; */
+    display: inline-block;
     max-width: 100%;
     align-items: center;
 }
@@ -111,22 +169,22 @@ input {
     text-overflow: ellipsis;
 }
 .tag-close {
-    
     background-color: #c0c4cc;
     top: 0;
     flex-shrink: 0;
-        border-radius: 50%;
+    border-radius: 50%;
     text-align: center;
-    position: relative;
+    /* position: relative; */
+    position: absolute;
+    right: -8px;
     cursor: pointer;
     font-size: 12px;
     height: 16px;
     width: 16px;
     line-height: 16px;
     vertical-align: middle;
-    right: -5px;
-        transform: scale(.8);
-        position: relative;
+    transform: scale(.8);
+ 
 }
 .tag-close:hover {
     color: #fff;
@@ -152,7 +210,7 @@ input {
     width: 100%;
     position: absolute;
     height: 1.5px;
-        background: #909399;
+    background: #909399;
     content: "";
     top: 7px;
     right: 0;

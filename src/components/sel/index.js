@@ -12,6 +12,7 @@ import './style.css';
  */
 const SelectMultip = ({data, width, onClick, max}) => {
   const [open, setOpen] = useState(false);//箭头的展开收藏标识
+  const [show,setShow] = useState(false);//删除图表的显隐
   const [list, setList] = useState(data);//下拉列表数据源
   const [checkedArr,setCheckedArr] = useState([]);//下拉框选中的数组
 
@@ -20,6 +21,7 @@ const SelectMultip = ({data, width, onClick, max}) => {
   const selectRef = useRef();
   const checkedRef = useRef();
   const [initFlag,setInitFlag] = useState(false);//初始渲染标识
+  // 箭头的折叠与展开事件
   const handleOpen = () => {
     setOpen(!open);
   }
@@ -44,17 +46,22 @@ const SelectMultip = ({data, width, onClick, max}) => {
   }
  
   // 选中复选框放入到选中数组checkedArr里
-  const handleCheck = (item,i) => {
+  function handleCheck (item,i) {
      let newArr=[];
     newArr = newArr.concat(checkedArr)
     newArr.push(item)
     setCheckedArr(newArr);
     // console.log(checkedArr)
+    if(newArr.length>0){
+      setShow(true)
+    }else{
+      setShow(false)
+    }
    
   };
 
   //根据item中的key,删除选中的选项
-  const handleClose = (key) => {
+  function handleClose(key) {
       // 删除选中的选项，更新选中数组checkedArr
       let newArr=[];
       checkedArr.forEach((item,i)=>{
@@ -72,6 +79,17 @@ const SelectMultip = ({data, width, onClick, max}) => {
       })
       setList(newList);
   };
+  // 删除全部的tag
+  function handleDeleteAll(){
+    let newArray=[];
+    setCheckedArr(newArray)
+    setShow(false)
+    let newList=[...list];
+    newList.forEach((k,i)=>{
+        k["checked"]=false
+    })
+    setList(newList);
+  }
 
   useEffect(() => {
     if(!initFlag){
@@ -82,6 +100,7 @@ const SelectMultip = ({data, width, onClick, max}) => {
       // console.log("不是初始渲染")
     }
   }, []);
+
   // 动态渲染节点部分
   const renderItem = (item) => {
       return  <span className="tag"  key={item.key} title={item.value}>
@@ -89,6 +108,7 @@ const SelectMultip = ({data, width, onClick, max}) => {
       <i onClick={()=>handleClose(item)} className="tag-close"></i>
       </span>
    };
+
    // 在输入框内显示选中的选项
   const renderMax = () => {
     let arr = list.filter(item => item.checked)
@@ -97,15 +117,20 @@ const SelectMultip = ({data, width, onClick, max}) => {
     // console.log(isUpperLimit)
     const lists = isUpperLimit ? arr.splice(0,max) : arr;
     // console.log(lists)
-    return <Fragment>{ lists.map( (item,i) => renderItem(item,i))}{isUpperLimit  && arr.length > 0 && <span className="tag"><span >+{arr.length}</span></span>} </Fragment>;
+    return <div className="selectPaneLeft">{ lists.map( (item,i) => renderItem(item,i))}{isUpperLimit  && arr.length > 0 && <span className="tag"><span >+{arr.length}</span></span>}</div>;
   
   };
 
   return (
     <div className="mutliDropdown" style={{width: width || '250px'}}>
-      <div className="select" ref={selectRef} onClick={handleOpen} >
+      <div className="select" ref={selectRef} onClick={handleOpen}>
         {renderMax()}
-        <i className={`select-right ${open===true ? 'select-up' : 'select-down'}`} ></i>
+        <div className='selectPaneRight'>
+          <i className={ `${show === true ? 'deleteAllIcon':'deleteNoneIcon'}`} onClick={handleDeleteAll}>x</i>
+          <span className="lineSplitIcon"></span>
+          <i className={`select-right ${open===true ? 'select-up' : 'select-down'}`}  ></i>
+        </div>
+       
       </div>
 
       <div className="mutliSelect">
