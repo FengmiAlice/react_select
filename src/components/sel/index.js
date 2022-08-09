@@ -11,9 +11,9 @@ import './style.css';
  * @param {*} max 最多展示tag数量，多的用+n标识
  */
 const SelectMultip = ({data, width, onClick, max}) => {
-  const [open, setOpen] = useState(false);
-  const [list, setList] = useState(data);
-  const [checkedArr,setCheckedArr] = useState([]);
+  const [open, setOpen] = useState(false);//箭头的展开收藏标识
+  const [list, setList] = useState(data);//下拉列表数据源
+  const [checkedArr,setCheckedArr] = useState([]);//下拉框选中的数组
 
 
   const ulRef = useRef();
@@ -31,7 +31,6 @@ const SelectMultip = ({data, width, onClick, max}) => {
 
   // input checkbox选中事件
   function inputCheck(e,item,i){
-    console.log(e.target.checked)
     item['checked'] = e.target.checked;
       // 判断item是否选中，如果选中调用checked方法
       if(e.target.checked === true){
@@ -46,11 +45,11 @@ const SelectMultip = ({data, width, onClick, max}) => {
  
   // 选中复选框放入到选中数组checkedArr里
   const handleCheck = (item,i) => {
-    let newArr=[];
+     let newArr=[];
     newArr = newArr.concat(checkedArr)
-    newArr.push(item);
+    newArr.push(item)
     setCheckedArr(newArr);
-    console.log(checkedArr)
+    // console.log(checkedArr)
    
   };
 
@@ -72,7 +71,6 @@ const SelectMultip = ({data, width, onClick, max}) => {
         }
       })
       setList(newList);
-    
   };
 
   useEffect(() => {
@@ -84,38 +82,22 @@ const SelectMultip = ({data, width, onClick, max}) => {
       // console.log("不是初始渲染")
     }
   }, []);
-
-
   // 动态渲染节点部分
   const renderItem = (item) => {
-    console.log(item) 
-      return <span className="tag"  key={item.key} title={item.value}>
+      return  <span className="tag"  key={item.key} title={item.value}>
       <span>{item.value}</span>
       <i onClick={()=>handleClose(item)} className="tag-close"></i>
       </span>
    };
-
-  
-
    // 在输入框内显示选中的选项
   const renderMax = () => {
-    let arr = checkedArr;
-    console.log(arr);     
+    let arr = list.filter(item => item.checked)
+    // console.log(arr);     
     const isUpperLimit = arr.length > max;
-    console.log(isUpperLimit)
-  
-    // 取出多出限制的选项放进一个数组
-    var limitArr=[];
-    if(isUpperLimit === true){
-      arr.forEach((item,i)=>{
-        if(i >= max){
-          limitArr.push(item)
-        }
-      })
-    }
-    
-    console.log(limitArr)
-    return <Fragment>{ arr.map( (item,i) => renderItem(item,i))}{isUpperLimit === true && limitArr.length>0 && <span className="tag"><span >+{limitArr.length}</span></span>} </Fragment>;
+    // console.log(isUpperLimit)
+    const lists = isUpperLimit ? arr.splice(0,max) : arr;
+    // console.log(lists)
+    return <Fragment>{ lists.map( (item,i) => renderItem(item,i))}{isUpperLimit  && arr.length > 0 && <span className="tag"><span >+{arr.length}</span></span>} </Fragment>;
   
   };
 
